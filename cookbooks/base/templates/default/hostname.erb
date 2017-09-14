@@ -1,0 +1,7 @@
+# DO NOT edit manually, Chef-client will take care of it.
+<% if node['domain'] -%>
+<%= node['fqdn'] %>
+<% else -%>
+<%= node['hostname'] %>.<%= node['resolver']['search']%>
+<% end %>
+

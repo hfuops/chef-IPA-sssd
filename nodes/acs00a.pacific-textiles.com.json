@@ -1,0 +1,16 @@
+{
+   "normal": {
+   },
+   "name": "acs00a",
+   "override": {
+   },
+   "default": {
+   },
+   "json_class": "Chef::Node",
+   "automatic": {
+   },
+   "run_list": [
+      "role[ipa_client]"
+   ],
+   "chef_type": "node"
+}

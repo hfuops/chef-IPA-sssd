@@ -1,0 +1,11 @@
+{
+"id": "sssd",
+"kinit_admin": "xxxx",
+
+"sssd_client": [
+
+  ".pacific-textiles.com"
+]
+
+}
+

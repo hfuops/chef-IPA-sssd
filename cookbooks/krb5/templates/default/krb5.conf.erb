@@ -1,0 +1,44 @@
+# Don't edit it manually, Chef will take care of it. :)
+
+includedir /etc/krb5.conf.d/
+includedir /var/lib/sss/pubconf/krb5.include.d/
+
+[logging]
+ default = FILE:/var/log/krb5libs.log
+ kdc = FILE:/var/log/krb5kdc.log
+ admin_server = FILE:/var/log/kadmind.log
+
+[libdefaults]
+ default_realm = <%= node['krb5']['domain'].upcase %>
+ dns_lookup_realm = false
+ # https://web.mit.edu/kerberos/krb5-1.12/doc/admin/conf_files/krb5_conf.html
+ # SRV record should exist on DNS server if true.  
+ dns_lookup_kdc = false
+ rdns = false
+ ticket_lifetime = 24h
+ forwardable = true
+ udp_preference_limit = 0
+ default_ccache_name = KEYRING:persistent:%{uid}
+
+[realms]
+  <%= node['krb5']['domain'].upcase %>  = {
+  kdc = <%= node['krb5']['kdc_primary'] %>:88      
+  kdc = <%= node['krb5']['kdc_secondary'] %>:88    
+  master_kdc = <%= node['krb5']['kdc_primary'] %>:88    
+  admin_server = <%= node['krb5']['kdc_primary'] %>:749 
+  kpasswd_server = <%= node['krb5']['kdc_primary'] %>:464
+  default_domain = <%= node['krb5']['domain'] %>           
+  pkinit_anchors = FILE:/etc/ipa/ca.crt
+}
+
+[domain_realm]
+ .<%= node['krb5']['domain'] %> = <%= node['krb5']['domain'].upcase %>
+ <%= node['krb5']['domain'] %> = <%= node['krb5']['domain'].upcase %>
+ <%= node['fqdn'] %> = <%= node['krb5']['domain'].upcase %>
+
+# useless on client-side?
+#[dbmodules]
+#  <%= node['krb5']['domain'].upcase %> = {
+#    db_library = ipadb.so
+#  }
+

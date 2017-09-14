@@ -1,0 +1,22 @@
+{
+  "name": "ipa_client",
+  "description": "configure ipa-client, test passed on SLES12-sp2",
+  "json_class": "Chef::Role",
+  "default_attributes": {
+
+  },
+  "override_attributes": {
+
+  },
+  "chef_type": "role",
+  "run_list": [
+   "recipe[base]",
+   "recipe[krb5]",
+   "recipe[sssd]"
+
+  ],
+  "env_run_lists": {
+
+  }
+}
+

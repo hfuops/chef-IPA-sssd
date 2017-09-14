@@ -1,0 +1,50 @@
+# Do not edit it manually,  chef-client will take care of it.
+
+[sssd]
+
+config_file_version = 2
+services = nss,pam<% if node['sssd']['autofs'] %>,autofs<% end %><% if node['sssd']['ssh'] %>,ssh<% end %><% if node['sssd']['sudo'] %>,sudo<% end %>
+
+domains = default
+
+[domain/default]
+;for debugging
+debug_level = 0x4000
+<% node['sssd']['conf'].each do |key, value| %>
+<% if not value.nil? %><%=  key %> = <%= value %><% end %>
+<% end %>
+
+;sudo
+<% if node['sssd']['sudo'] %>
+<% node['sssd']['sudo_conf'].each do |key, value| %>
+<% if not value.nil? %><%=  key %> = <%= value %><% end %>
+<% end %>
+<% end %>
+
+;autofs
+;ldap_schema = rfc2307bis
+;from debug log, cn = <LOCATION>
+;cn=default,cn=automount,dc=pacific-textiles,dc=com
+<% if node['sssd']['autofs'] %>
+<% node['sssd']['autofs_conf'].each do |key, value| %>
+<% if not value.nil? %><%=  key %> = <%= value %><% end %>
+<% end %>
+<% end %>
+
+[nss]
+
+filter_users = <%= node['sssd']['filter_users'].join(',') %>
+filter_groups = <%= node['sssd']['filter_groups'].join(',') %>
+
+[pam]
+
+[sudo]
+
+[ssh]
+
+[pac]
+
+[autofs] 
+
+;debug_level = 0x4000
+
